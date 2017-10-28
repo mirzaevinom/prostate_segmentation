@@ -1,6 +1,8 @@
-# NCI-ISBI 2013 Challenge - Automated Segmentation of Prostate Structures, using Keras Data Augmentation
+# NCI-ISBI 2013 Challenge - Automated Segmentation of Prostate Structures (using Keras Data Augmentation)
 
-In this work I used deep learning methods in automated segmentation of prostate gland. The data was originally posted on [Cancer Imaging Archive website](http://www.cancerimagingarchive.net/) in 2013 for NCI-ISBI competition. More info on this NCI-ISBI competition can be found on [Cancer Imaging Archive website](https://wiki.cancerimagingarchive.net/display/Public/NCI-ISBI+2013+Challenge+-+Automated+Segmentation+of+Prostate+Structures).
+In this work I used deep learning methods in automated segmentation of prostate gland.
+![images/prostate_seg.png](images/prostate_seg.png)
+The data was originally posted on [Cancer Imaging Archive website](http://www.cancerimagingarchive.net/) in 2013 for NCI-ISBI competition. More info on this NCI-ISBI competition can be found on [Cancer Imaging Archive website](https://wiki.cancerimagingarchive.net/display/Public/NCI-ISBI+2013+Challenge+-+Automated+Segmentation+of+Prostate+Structures).
 
 The network architecture was inspired by [U-Net: Convolutional Networks for Biomedical Image Segmentation](http://lmb.informatik.uni-freiburg.de/people/ronneber/u-net/) and by Keras implementation of the model by [Marko Josic](https://github.com/jocicmarko/ultrasound-nerve-segmentation)
 
@@ -13,6 +15,8 @@ This deep neural network (which I call simple U-net) achieves **~0.75 Dice coeff
 [Provided data](https://wiki.cancerimagingarchive.net/display/DOI/NCI-ISBI+2013+Challenge%3A+Automated+Segmentation+of+Prostate+Structures) is processed by ```dicom_to_array``` function. After downloading the data extract the files in the following directory structure:
 
 ```
+-codes
+ |
 -data
  |
  ---- train
@@ -56,7 +60,7 @@ The provided model is basically modification of [U-Net architecture](http://lmb.
 ### Training
 
 The training set has only ~1000 images with masks. I used Keras's ```ImageDataGenerator``` to augment data with random rotations, flips, zooms and shifts. Note that I have used same image augmentation parameters for both images and masks. Overall, I have trained the model with ```fit_generator``` for ~150k augmented dataset. The model is trained for 30 epochs, where each epoch took ~3 minutes on Nvidia P100 GPUs provide by [Ohio Supercomputer Center](https://www.osc.edu/). Memory footprint of the model is ~2GB.
-After 30 epochs, calculated Dice coefficient is ~0.75, which yielded ~0.70 validation Dice coefficient.
+After 30 epochs, calculated Dice coefficient is ~0.75 on test images.
 
 ## Some best and worst predictions
 
@@ -76,7 +80,7 @@ This tutorial depends on the following libraries:
 * Tensorflow
 * Keras >= 2.0
 
-This code should also be compatible with Theano backend of Keras, but in my experience Theano was slower compared to TensorFlow.
+This code should also be compatible with Theano backend of Keras, but in my experience Theano was slower than TensorFlow.
 
 ### Running the model
 

@@ -3,7 +3,7 @@
 """
 Created on Fri Sep 15 17:18:38 2017
 
-@author: mirzaev.1
+@author: Inom Mirzaev
 """
 
 from __future__ import division, print_function
@@ -32,17 +32,15 @@ from models import actual_unet, simple_unet
 from metrics import dice_coef, dice_coef_loss, numpy_dice
 
 from augmenters import elastic_transform
-from test import check_predictions
 
 def dicom_to_array(img_rows, img_cols):
 
     for direc in ['train', 'test', 'validate']:
 
         fname = '../data/' + direc + '_dict.pkl'
-
         PathDicom = '../data/' + direc + '/'
-
         dcm_dict = dict()  # create an empty list
+
         for dirName, subdirList, fileList in os.walk(PathDicom):
 
             if any(".dcm" in s for s in fileList):
@@ -54,11 +52,8 @@ def dicom_to_array(img_rows, img_cols):
                 for filename in np.sort(fileList):
 
                     img = dicom.read_file(os.path.join(dirName,filename)).pixel_array.T
-
                     img = equalize_hist( img.astype(int) )
-
                     img = resize( img, (img_rows, img_cols), preserve_range=True)
-
                     imgs[int(filename[:-4])] = img
 
                 dcm_dict[ptn_name] = imgs
@@ -114,8 +109,6 @@ def step_decay(epoch):
     lrate = initial_lrate * drop**int((1 + epoch) / epochs_drop)
     return lrate
 
-
-
 def keras_fit_generator(img_rows=96, img_cols=96, n_imgs=10**4, batch_size=32, regenerate=True):
 
     if regenerate:
@@ -144,8 +137,8 @@ def keras_fit_generator(img_rows=96, img_cols=96, n_imgs=10**4, batch_size=32, r
 
     # Provide the same seed and keyword arguments to the fit and flow methods
     seed = 1
-    image_datagen.fit(X_train, augment=True, seed=seed)
-    mask_datagen.fit(y_train, augment=True, seed=seed)
+    image_datagen.fit(X_train,seed=seed)
+    mask_datagen.fit(y_train, seed=seed)
 
     image_generator = image_datagen.flow(X_train, batch_size=batch_size, seed=seed)
 
@@ -170,7 +163,7 @@ def keras_fit_generator(img_rows=96, img_cols=96, n_imgs=10**4, batch_size=32, r
                         train_generator,
                         steps_per_epoch=n_imgs//batch_size,
                         epochs=30,
-                        verbose=2,
+                        verbose=1,
                         shuffle=True,
                         validation_data=(X_val, y_val),
                         callbacks=[model_checkpoint, lrate],
@@ -184,11 +177,9 @@ def keras_fit_generator(img_rows=96, img_cols=96, n_imgs=10**4, batch_size=32, r
 import time
 
 start = time.time()
-# keras_fit_generator(img_rows=96, img_cols=96, regenerate=False,
-#                    n_imgs=15*10**4, batch_size=32)
+keras_fit_generator(img_rows=96, img_cols=96, regenerate=True,
+                   n_imgs=15*10**4, batch_size=32)
 
-check_predictions( )
-plt.show()
 end = time.time()
 
 print('Elapsed time:', round((end-start)/60, 2 ) )

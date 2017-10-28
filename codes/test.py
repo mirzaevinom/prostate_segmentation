@@ -1,9 +1,8 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
-Created on Fri Sep 15 17:18:38 2017
-
-@author: mirzaev.1
+Created on Fri Oct 27 2017
+@author: Inom Mirzaev
 """
 
 from __future__ import division, print_function
@@ -17,6 +16,38 @@ from models import actual_unet, simple_unet
 from metrics import dice_coef, dice_coef_loss, numpy_dice
 import os
 import matplotlib.gridspec as gridspec
+
+
+def make_plots(img, segm, segm_pred):
+    n_cols=3
+    n_rows = len(img)
+
+    fig = plt.figure(figsize=[ 4*n_cols, int(4*n_rows)] )
+    gs = gridspec.GridSpec( n_rows , n_cols )
+
+    for mm in range( len(img) ):
+
+        ax = fig.add_subplot(gs[n_cols*mm])
+        ax.imshow(img[mm], cmap='gray' )
+        ax.axis("image")  # remove axis
+        ax.set_aspect(1)  # aspect ratio of 1
+        if mm==0:
+            ax.set_title('MRI image', fontsize=20)
+        ax = fig.add_subplot(gs[n_cols*mm+1])
+        ax.imshow(segm[mm], cmap='gray' )
+        ax.axis("image")  # remove axis
+        ax.set_aspect(1)  # aspect ratio of 1
+        if mm==0:
+            ax.set_title('True Mask', fontsize=20)
+
+        ax = fig.add_subplot(gs[n_cols*mm+2])
+        ax.imshow(segm_pred[mm], cmap='gray' )
+        ax.axis("image")  # remove axis
+        ax.set_aspect(1)  # aspect ratio of 1
+        if mm==0:
+            ax.set_title('Predicted Mask', fontsize=20)
+    return fig
+
 
 def check_predictions(n_best=3, n_worst=3 ):
     if not os.path.isdir('../images'):
@@ -47,54 +78,37 @@ def check_predictions(n_best=3, n_worst=3 ):
 
     #Add some best and worst predictions
     img_list = []
-    count = 0
+    count = 1
     for ind in sort_ind:
+        if ind in indice:
+            img_list.append(ind)
+            count+=1
         if count>n_best:
             break
-        if ind in indice:
-            img_list.append(ind)
-            count+=1
-
-
-    count = 0
-    for ind in sort_ind[::-1]:
-
-        if count>n_worst:
-            break
-
-        if ind in indice:
-            img_list.append(ind)
-            count+=1
-
 
     segm_pred = y_pred[img_list].reshape(-1,img_rows, img_cols)
     img = X_test[img_list].reshape(-1,img_rows, img_cols)
     segm = y_test[img_list].reshape(-1, img_rows, img_cols).astype('float32')
 
-    n_cols=3
-    n_rows = len(img_list)
+    fig = make_plots(img, segm, segm_pred)
+    fig.savefig('../images/best_predictions.png', bbox_inches='tight', dpi=300 )
 
-    fig = plt.figure(figsize=[ 4*n_cols, int(4.3*n_rows)] )
-    gs = gridspec.GridSpec( n_rows , n_cols, hspace=0.2 )
 
-    for mm in range( len(img_list) ):
+    img_list = []
+    count = 1
+    for ind in sort_ind[::-1]:
+        if ind in indice:
+            img_list.append(ind)
+            count+=1
+        if count>n_worst:
+            break
 
-        ax = fig.add_subplot(gs[n_cols*mm])
-        ax.imshow(img[mm], cmap='gray' )
-        ax.axis("image")  # remove axis
-        ax.set_aspect(1)  # aspect ratio of 1
+    segm_pred = y_pred[img_list].reshape(-1,img_rows, img_cols)
+    img = X_test[img_list].reshape(-1,img_rows, img_cols)
+    segm = y_test[img_list].reshape(-1, img_rows, img_cols).astype('float32')
 
-        ax = fig.add_subplot(gs[n_cols*mm+1])
-        ax.imshow(segm[mm], cmap='gray' )
-        ax.axis("image")  # remove axis
-        ax.set_aspect(1)  # aspect ratio of 1
-
-        ax = fig.add_subplot(gs[n_cols*mm+2])
-        ax.imshow(segm_pred[mm], cmap='gray' )
-        ax.axis("image")  # remove axis
-        ax.set_aspect(1)  # aspect ratio of 1
-
-    fig.savefig('../images/test_predictions.png', bbox_inches='tight', dpi=300 )
+    fig = make_plots(img, segm, segm_pred)
+    fig.savefig('../images/worst_predictions.png', bbox_inches='tight', dpi=300 )
 
 if __name__=='__main__':
     check_predictions( )
