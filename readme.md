@@ -1,12 +1,14 @@
 # NCI-ISBI 2013 Challenge - Automated Segmentation of Prostate Structures (using Keras Data Augmentation)
 
-In this work I used deep learning methods in automated segmentation of prostate gland.
+In this work, I used deep learning methods in automated segmentation of prostate gland.
+
 ![images/prostate_seg.png](images/prostate_seg.png)
+
 The data was originally posted on [Cancer Imaging Archive website](http://www.cancerimagingarchive.net/) in 2013 for NCI-ISBI competition. More info on this NCI-ISBI competition can be found on [Cancer Imaging Archive website](https://wiki.cancerimagingarchive.net/display/Public/NCI-ISBI+2013+Challenge+-+Automated+Segmentation+of+Prostate+Structures).
 
 The network architecture was inspired by [U-Net: Convolutional Networks for Biomedical Image Segmentation](http://lmb.informatik.uni-freiburg.de/people/ronneber/u-net/) and by Keras implementation of the model by [Marko Josic](https://github.com/jocicmarko/ultrasound-nerve-segmentation)
 
-This deep neural network (which I call simple U-net) achieves **~0.75 Dice coefficient** on the test images (10 patients and ~300 images), and can be tuned further to achieve better results.
+This deep neural network (which I call simple U-net) achieves **~0.70 Dice coefficient** (max Dice similarity coefficient is 1) on the test images (10 patients and ~300 images), and can be tuned further to achieve better results.
 
 ## Overview
 
@@ -59,13 +61,21 @@ The provided model is basically modification of [U-Net architecture](http://lmb.
 
 ### Training
 
-The training set has only ~1000 images with masks. I used Keras's ```ImageDataGenerator``` to augment data with random rotations, flips, zooms and shifts. Note that I have used same image augmentation parameters for both images and masks. Overall, I have trained the model with ```fit_generator``` for ~150k augmented dataset. The model is trained for 30 epochs, where each epoch took ~3 minutes on Nvidia P100 GPUs provide by [Ohio Supercomputer Center](https://www.osc.edu/). Memory footprint of the model is ~2GB.
-After 30 epochs, calculated Dice coefficient is ~0.75 on test images.
+The training set has only ~1000 images with masks. I used Keras's ```ImageDataGenerator``` to augment data with random rotations, flips, zooms and shifts. Note that I have used the same image augmentation parameters and random seed for both images and masks. Overall, I have trained the model with ```fit_generator``` for ~150k augmented dataset. The model is trained for 30 epochs with batch size 32, where each epoch took ~3 minutes on Nvidia P100 GPUs provided by [Ohio Supercomputer Center](https://www.osc.edu/). Memory footprint of the model is ~2GB.
+After 30 epochs, calculated Dice coefficient is ~0.70 on test images.
 
-## Some best and worst predictions
+## Predictions
 
-![images/test_predictions.png](images/test_predictions.png)
+Top 3 predictions by Dice coefficient
 
+![images/best_predictions.png](images/best_predictions.png)
+
+
+Bottom 3 predictions by Dice coefficient
+
+![images/worst_predictions.png](images/worst_predictions.png)
+
+For the worst predictions, even I am having difficulties defining the prostate boundaries.
 ---
 
 ## How to use
@@ -80,7 +90,7 @@ This tutorial depends on the following libraries:
 * Tensorflow
 * Keras >= 2.0
 
-This code should also be compatible with Theano backend of Keras, but in my experience Theano was slower than TensorFlow.
+This code should also be compatible with Theano backend of Keras, but in my experience Theano is slower than TensorFlow.
 
 ### Running the model
 

@@ -1,0 +1,116 @@
+
+Couldn't import dot_parser, loading of dot files will not be possible.
+Dimension mismatch for ProstateDx-01-0055 in folder train
+(96, 96)
+____________________________________________________________________________________________________
+Layer (type)                     Output Shape          Param #     Connected to                     
+====================================================================================================
+input_1 (InputLayer)             (None, 96, 96, 1)     0                                            
+____________________________________________________________________________________________________
+conv2d_1 (Conv2D)                (None, 96, 96, 8)     80          input_1[0][0]                    
+____________________________________________________________________________________________________
+conv2d_2 (Conv2D)                (None, 96, 96, 8)     584         conv2d_1[0][0]                   
+____________________________________________________________________________________________________
+max_pooling2d_1 (MaxPooling2D)   (None, 48, 48, 8)     0           conv2d_2[0][0]                   
+____________________________________________________________________________________________________
+conv2d_3 (Conv2D)                (None, 48, 48, 16)    1168        max_pooling2d_1[0][0]            
+____________________________________________________________________________________________________
+conv2d_4 (Conv2D)                (None, 48, 48, 16)    2320        conv2d_3[0][0]                   
+____________________________________________________________________________________________________
+max_pooling2d_2 (MaxPooling2D)   (None, 24, 24, 16)    0           conv2d_4[0][0]                   
+____________________________________________________________________________________________________
+conv2d_5 (Conv2D)                (None, 24, 24, 32)    4640        max_pooling2d_2[0][0]            
+____________________________________________________________________________________________________
+conv2d_6 (Conv2D)                (None, 24, 24, 32)    9248        conv2d_5[0][0]                   
+____________________________________________________________________________________________________
+up_sampling2d_1 (UpSampling2D)   (None, 48, 48, 32)    0           conv2d_6[0][0]                   
+____________________________________________________________________________________________________
+conv2d_7 (Conv2D)                (None, 48, 48, 16)    2064        up_sampling2d_1[0][0]            
+____________________________________________________________________________________________________
+concatenate_1 (Concatenate)      (None, 48, 48, 32)    0           conv2d_7[0][0]                   
+                                                                   conv2d_4[0][0]                   
+____________________________________________________________________________________________________
+conv2d_8 (Conv2D)                (None, 48, 48, 16)    4624        concatenate_1[0][0]              
+____________________________________________________________________________________________________
+conv2d_9 (Conv2D)                (None, 48, 48, 16)    2320        conv2d_8[0][0]                   
+____________________________________________________________________________________________________
+up_sampling2d_2 (UpSampling2D)   (None, 96, 96, 16)    0           conv2d_9[0][0]                   
+____________________________________________________________________________________________________
+conv2d_10 (Conv2D)               (None, 96, 96, 8)     520         up_sampling2d_2[0][0]            
+____________________________________________________________________________________________________
+concatenate_2 (Concatenate)      (None, 96, 96, 16)    0           conv2d_10[0][0]                  
+                                                                   conv2d_2[0][0]                   
+____________________________________________________________________________________________________
+conv2d_11 (Conv2D)               (None, 96, 96, 8)     1160        concatenate_2[0][0]              
+____________________________________________________________________________________________________
+conv2d_12 (Conv2D)               (None, 96, 96, 8)     584         conv2d_11[0][0]                  
+____________________________________________________________________________________________________
+conv2d_13 (Conv2D)               (None, 96, 96, 1)     9           conv2d_12[0][0]                  
+====================================================================================================
+Total params: 29,321
+Trainable params: 29,321
+Non-trainable params: 0
+____________________________________________________________________________________________________
+Epoch 1/30
+306s - loss: -5.2009e-01 - dice_coef: 0.5201 - binary_accuracy: 0.9681 - val_loss: -6.2086e-01 - val_dice_coef: 0.6209 - val_binary_accuracy: 0.9854
+Epoch 2/30
+299s - loss: -6.4734e-01 - dice_coef: 0.6473 - binary_accuracy: 0.9858 - val_loss: -6.4997e-01 - val_dice_coef: 0.6500 - val_binary_accuracy: 0.9861
+Epoch 3/30
+298s - loss: -6.7649e-01 - dice_coef: 0.6765 - binary_accuracy: 0.9870 - val_loss: -6.9476e-01 - val_dice_coef: 0.6948 - val_binary_accuracy: 0.9877
+Epoch 4/30
+297s - loss: -6.9134e-01 - dice_coef: 0.6913 - binary_accuracy: 0.9876 - val_loss: -7.0116e-01 - val_dice_coef: 0.7012 - val_binary_accuracy: 0.9877
+Epoch 5/30
+298s - loss: -7.1425e-01 - dice_coef: 0.7142 - binary_accuracy: 0.9886 - val_loss: -7.1469e-01 - val_dice_coef: 0.7147 - val_binary_accuracy: 0.9887
+Epoch 6/30
+298s - loss: -7.2160e-01 - dice_coef: 0.7216 - binary_accuracy: 0.9889 - val_loss: -7.0467e-01 - val_dice_coef: 0.7047 - val_binary_accuracy: 0.9888
+Epoch 7/30
+298s - loss: -7.2580e-01 - dice_coef: 0.7258 - binary_accuracy: 0.9891 - val_loss: -7.2157e-01 - val_dice_coef: 0.7216 - val_binary_accuracy: 0.9885
+Epoch 8/30
+298s - loss: -7.3045e-01 - dice_coef: 0.7305 - binary_accuracy: 0.9892 - val_loss: -7.1986e-01 - val_dice_coef: 0.7199 - val_binary_accuracy: 0.9885
+Epoch 9/30
+297s - loss: -7.3259e-01 - dice_coef: 0.7326 - binary_accuracy: 0.9894 - val_loss: -7.2368e-01 - val_dice_coef: 0.7237 - val_binary_accuracy: 0.9885
+Epoch 10/30
+297s - loss: -7.4346e-01 - dice_coef: 0.7435 - binary_accuracy: 0.9898 - val_loss: -7.2478e-01 - val_dice_coef: 0.7248 - val_binary_accuracy: 0.9886
+Epoch 11/30
+296s - loss: -7.4540e-01 - dice_coef: 0.7454 - binary_accuracy: 0.9899 - val_loss: -7.1739e-01 - val_dice_coef: 0.7174 - val_binary_accuracy: 0.9882
+Epoch 12/30
+296s - loss: -7.4860e-01 - dice_coef: 0.7486 - binary_accuracy: 0.9900 - val_loss: -7.2527e-01 - val_dice_coef: 0.7253 - val_binary_accuracy: 0.9890
+Epoch 13/30
+296s - loss: -7.4898e-01 - dice_coef: 0.7490 - binary_accuracy: 0.9900 - val_loss: -7.2913e-01 - val_dice_coef: 0.7291 - val_binary_accuracy: 0.9887
+Epoch 14/30
+296s - loss: -7.5086e-01 - dice_coef: 0.7509 - binary_accuracy: 0.9901 - val_loss: -7.2256e-01 - val_dice_coef: 0.7226 - val_binary_accuracy: 0.9890
+Epoch 15/30
+296s - loss: -7.5686e-01 - dice_coef: 0.7569 - binary_accuracy: 0.9904 - val_loss: -7.2006e-01 - val_dice_coef: 0.7201 - val_binary_accuracy: 0.9885
+Epoch 16/30
+296s - loss: -7.5798e-01 - dice_coef: 0.7580 - binary_accuracy: 0.9904 - val_loss: -7.2010e-01 - val_dice_coef: 0.7201 - val_binary_accuracy: 0.9888
+Epoch 17/30
+296s - loss: -7.5893e-01 - dice_coef: 0.7589 - binary_accuracy: 0.9904 - val_loss: -7.2475e-01 - val_dice_coef: 0.7247 - val_binary_accuracy: 0.9890
+Epoch 18/30
+296s - loss: -7.5959e-01 - dice_coef: 0.7596 - binary_accuracy: 0.9905 - val_loss: -7.0837e-01 - val_dice_coef: 0.7084 - val_binary_accuracy: 0.9891
+Epoch 19/30
+297s - loss: -7.6083e-01 - dice_coef: 0.7608 - binary_accuracy: 0.9905 - val_loss: -7.1189e-01 - val_dice_coef: 0.7119 - val_binary_accuracy: 0.9887
+Epoch 20/30
+297s - loss: -7.6324e-01 - dice_coef: 0.7632 - binary_accuracy: 0.9906 - val_loss: -7.1335e-01 - val_dice_coef: 0.7133 - val_binary_accuracy: 0.9888
+Epoch 21/30
+297s - loss: -7.6442e-01 - dice_coef: 0.7644 - binary_accuracy: 0.9906 - val_loss: -7.1964e-01 - val_dice_coef: 0.7196 - val_binary_accuracy: 0.9885
+Epoch 22/30
+297s - loss: -7.6382e-01 - dice_coef: 0.7638 - binary_accuracy: 0.9906 - val_loss: -7.1569e-01 - val_dice_coef: 0.7157 - val_binary_accuracy: 0.9887
+Epoch 23/30
+297s - loss: -7.6556e-01 - dice_coef: 0.7656 - binary_accuracy: 0.9907 - val_loss: -7.1698e-01 - val_dice_coef: 0.7170 - val_binary_accuracy: 0.9887
+Epoch 24/30
+297s - loss: -7.6514e-01 - dice_coef: 0.7651 - binary_accuracy: 0.9907 - val_loss: -7.1051e-01 - val_dice_coef: 0.7105 - val_binary_accuracy: 0.9888
+Epoch 25/30
+297s - loss: -7.6639e-01 - dice_coef: 0.7664 - binary_accuracy: 0.9908 - val_loss: -7.1486e-01 - val_dice_coef: 0.7149 - val_binary_accuracy: 0.9886
+Epoch 26/30
+297s - loss: -7.6663e-01 - dice_coef: 0.7666 - binary_accuracy: 0.9908 - val_loss: -7.1356e-01 - val_dice_coef: 0.7136 - val_binary_accuracy: 0.9886
+Epoch 27/30
+297s - loss: -7.6664e-01 - dice_coef: 0.7666 - binary_accuracy: 0.9908 - val_loss: -7.1461e-01 - val_dice_coef: 0.7146 - val_binary_accuracy: 0.9887
+Epoch 28/30
+297s - loss: -7.6735e-01 - dice_coef: 0.7674 - binary_accuracy: 0.9908 - val_loss: -7.1457e-01 - val_dice_coef: 0.7146 - val_binary_accuracy: 0.9886
+Epoch 29/30
+297s - loss: -7.6786e-01 - dice_coef: 0.7679 - binary_accuracy: 0.9908 - val_loss: -7.1891e-01 - val_dice_coef: 0.7189 - val_binary_accuracy: 0.9887
+Epoch 30/30
+297s - loss: -7.6856e-01 - dice_coef: 0.7686 - binary_accuracy: 0.9908 - val_loss: -7.1664e-01 - val_dice_coef: 0.7166 - val_binary_accuracy: 0.9887
+
+Test accuracy: 0.701575296831
+Elapsed time: 149.57
